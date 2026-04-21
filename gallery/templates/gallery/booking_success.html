@@ -1,0 +1,16 @@
+{% extends 'gallery/base.html' %}
+
+{% block content %}
+<div style="min-height: 100vh; padding: 120px 2rem 60px; display: flex; align-items: center; justify-content: center;">
+    <div style="max-width: 500px; text-align: center;">
+        <i class="fas fa-check-circle" style="font-size: 5rem; color: #ff6b35; margin-bottom: 1rem;"></i>
+        <h1 style="margin-bottom: 1rem;">Booking Request Sent!</h1>
+        <p style="margin-bottom: 2rem;">Thank you for your booking request. We will contact you within 24 hours to confirm your session.</p>
+        <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 10px; margin-bottom: 2rem;">
+            <p><i class="fas fa-envelope"></i> A confirmation email has been sent to your inbox.</p>
+        </div>
+        <a href="/" class="btn btn-primary">Return to Home</a>
+        <a href="{% url 'gallery' %}" class="btn btn-outline">Browse Gallery</a>
+    </div>
+</div>
+{% endblock %}

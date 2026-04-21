@@ -1,0 +1,143 @@
+{% extends 'gallery/base.html' %}
+
+{% block content %}
+<div style="min-height: 100vh; padding: 120px 2rem 80px;">
+    <div style="max-width: 1200px; margin: 0 auto;">
+        
+        <!-- Page Header -->
+        <div style="text-align: center; margin-bottom: 3rem;">
+            <h1 class="section-title">Share Your <span>Experience</span></h1>
+            <p style="opacity: 0.8;">Your feedback helps us improve and helps other clients make informed decisions.</p>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 3rem;">
+            
+            <!-- Left: Submit Review Form -->
+            <div style="background: rgba(255,255,255,0.05); border-radius: 24px; padding: 2rem;">
+                <h2 style="margin-bottom: 1.5rem;">Write a <span style="color: #ff6b35;">Review</span></h2>
+                
+                {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert-success" style="margin-bottom: 1.5rem;">
+                        <i class="fas fa-check-circle"></i> {{ message }}
+                    </div>
+                    {% endfor %}
+                {% endif %}
+                
+                <form method="post" action="{% url 'submit_review' %}">
+                    {% csrf_token %}
+                    
+                    <div style="margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem;">Your Name *</label>
+                        {{ form.client_name }}
+                    </div>
+                    
+                    <div style="margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem;">Your Email *</label>
+                        {{ form.client_email }}
+                    </div>
+                    
+                    <div style="margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem;">Rating *</label>
+                        {{ form.rating }}
+                    </div>
+                    
+                    <div style="margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem;">Event Type</label>
+                        {{ form.event_type }}
+                    </div>
+                    
+                    <div style="margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem;">Your Review *</label>
+                        {{ form.review_text }}
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">
+                        <i class="fas fa-paper-plane"></i> Submit Review
+                    </button>
+                </form>
+                
+                <p style="font-size: 0.8rem; margin-top: 1rem; opacity: 0.6; text-align: center;">
+                    <i class="fas fa-shield-alt"></i> Your review will be published after admin approval
+                </p>
+            </div>
+            
+            <!-- Right: Recent Reviews -->
+            <div>
+                <h2 style="margin-bottom: 1.5rem;">Client <span style="color: #ff6b35;">Testimonials</span></h2>
+                
+                {% if total_reviews > 0 %}
+                <!-- Average Rating Summary -->
+                <div style="background: rgba(255,107,53,0.1); border-radius: 16px; padding: 1.5rem; text-align: center; margin-bottom: 2rem;">
+                    <div style="font-size: 3rem; font-weight: 800; color: #ff6b35;">{{ avg_rating }}</div>
+                    <div style="color: #ffc107; font-size: 1.2rem; margin: 0.5rem 0;">
+                        {% for i in "12345"|make_list %}
+                            {% if forloop.counter <= avg_rating %}★{% else %}☆{% endif %}
+                        {% endfor %}
+                    </div>
+                    <p>Based on {{ total_reviews }} review{{ total_reviews|pluralize }}</p>
+                </div>
+                {% endif %}
+                
+                <div class="reviews-list">
+                    {% for review in approved_reviews %}
+                    <div style="background: rgba(255,255,255,0.03); border-radius: 16px; padding: 1.5rem; margin-bottom: 1rem; transition: transform 0.3s;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 0.5rem;">
+                            <h3 style="font-size: 1.1rem; margin: 0;">{{ review.client_name }}</h3>
+                            <div style="color: #ffc107;">
+                                {% for i in "12345"|make_list %}
+                                    {% if forloop.counter <= review.rating %}★{% else %}☆{% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <p style="font-style: italic; margin: 0.75rem 0; line-height: 1.6;">"{{ review.review_text }}"</p>
+                        <small style="opacity: 0.6;">
+                            <i class="fas fa-calendar"></i> {{ review.created_at|date:"F j, Y" }}
+                            {% if review.event_type %}
+                            | <i class="fas fa-camera"></i> {{ review.get_event_type_display }}
+                            {% endif %}
+                        </small>
+                    </div>
+                    {% empty %}
+                    <div style="text-align: center; padding: 3rem; background: rgba(255,255,255,0.03); border-radius: 16px;">
+                        <i class="fas fa-comment-dots" style="font-size: 3rem; opacity: 0.3; margin-bottom: 1rem; display: inline-block;"></i>
+                        <p>No reviews yet. Be the first to share your experience!</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .reviews-list div:hover {
+        transform: translateX(5px);
+        background: rgba(255,255,255,0.05);
+    }
+    
+    /* Form styling */
+    .form-control {
+        width: 100%;
+        padding: 0.8rem;
+        background: rgba(255,255,255,0.1);
+        border: 1px solid rgba(255,107,53,0.3);
+        border-radius: 10px;
+        color: white;
+    }
+    
+    .form-control:focus {
+        outline: none;
+        border-color: #ff6b35;
+    }
+    
+    select.form-control {
+        cursor: pointer;
+    }
+    
+    textarea.form-control {
+        resize: vertical;
+        min-height: 100px;
+    }
+</style>
+{% endblock %}

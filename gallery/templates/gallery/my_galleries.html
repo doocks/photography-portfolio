@@ -1,0 +1,23 @@
+{% extends 'gallery/base.html' %}
+
+{% block content %}
+<div style="min-height: 100vh; padding: 100px 2rem 60px;">
+    <div style="max-width: 1200px; margin: 0 auto;">
+        <h1 class="section-title">My <span>Galleries</span></h1>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
+            {% for gallery in galleries %}
+            <div class="package-card" data-aos="fade-up" style="background: rgba(255,255,255,0.05); border-radius: 20px; padding: 1.5rem; text-align: center;">
+                <i class="fas fa-images" style="font-size: 3rem; color: #ff6b35; margin-bottom: 1rem;"></i>
+                <h3>{{ gallery.title }}</h3>
+                <p>Access Code: <strong>{{ gallery.access_code }}</strong></p>
+                <p>{{ gallery.photos.count }} photos</p>
+                <a href="{% url 'client_gallery_view' gallery.access_code %}" class="btn btn-primary" style="margin-top: 1rem;">View Gallery</a>
+            </div>
+            {% empty %}
+            <p style="text-align: center; grid-column: 1/-1;">You don't have any galleries yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

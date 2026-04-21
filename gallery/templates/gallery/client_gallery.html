@@ -1,0 +1,65 @@
+{% extends 'gallery/base.html' %}
+
+{% block content %}
+<div style="min-height: 100vh; padding: 100px 2rem 60px;">
+    <div style="max-width: 1400px; margin: 0 auto;">
+        
+        <!-- Gallery Header -->
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 2rem;">
+            <h1 class="section-title" style="margin-bottom: 0;">{{ gallery.title }}</h1>
+            <div>
+                <a href="{% url 'logout_gallery' %}" class="btn btn-outline" style="padding: 0.5rem 1rem;">
+                    <i class="fas fa-sign-out-alt"></i> Exit Gallery
+                </a>
+            </div>
+        </div>
+        
+        <p style="text-align: center; margin-bottom: 2rem; opacity: 0.7;">
+            <i class="fas fa-info-circle"></i> This gallery will expire on {{ gallery.expires_at|date:"F j, Y" }}
+        </p>
+        
+        <!-- Photos Grid -->
+        <div class="gallery-grid">
+            {% for photo in photos %}
+            <div class="gallery-item" data-aos="fade-up">
+                <img src="{{ photo.image.url }}" alt="{{ photo.caption|default:'Photo' }}" loading="lazy">
+                <div class="gallery-overlay">
+                    <h3>{{ photo.caption|default:"Photo" }}</h3>
+                    {% if photo.is_downloadable %}
+                    <a href="{{ photo.image.url }}" download style="color: #ff6b35; margin-top: 0.5rem; display: inline-block;">
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            {% empty %}
+            <p style="text-align: center; grid-column: 1/-1;">No photos in this gallery yet.</p>
+            {% endfor %}
+        </div>
+        
+        <!-- Security Notice -->
+        <div style="text-align: center; margin-top: 3rem; padding: 1rem; background: rgba(255,255,255,0.03); border-radius: 10px;">
+            <p style="font-size: 0.8rem; opacity: 0.5;">
+                <i class="fas fa-shield-alt"></i> Secure private gallery | Session expires in 1 hour
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Disable right-click on images (basic protection)
+    document.querySelectorAll('.gallery-item img').forEach(img => {
+        img.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            return false;
+        });
+    });
+    
+    // Warn before leaving page
+    window.addEventListener('beforeunload', function(e) {
+        // Optional: Add warning if you want
+        // e.preventDefault();
+        // e.returnValue = '';
+    });
+</script>
+{% endblock %}

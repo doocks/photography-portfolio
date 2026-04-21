@@ -1,0 +1,35 @@
+{% extends 'gallery/base.html' %}
+
+{% block content %}
+<div style="min-height: 100vh; padding: 100px 2rem 60px;">
+    <div style="max-width: 1200px; margin: 0 auto;">
+        <h1 class="section-title" data-aos="fade-up">Photography <span>Blog</span></h1>
+        <p style="text-align: center; margin-bottom: 3rem;" data-aos="fade-up" data-aos-delay="100">Tips, stories, and behind-the-scenes from my photography journey</p>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 2rem;">
+            {% for post in posts %}
+            <div class="testimonial-card" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:100 }}" style="text-align: left; padding: 0; overflow: hidden;">
+                <div style="height: 220px; background: linear-gradient(135deg, #ff6b35, #ff3b00); display: flex; align-items: center; justify-content: center;">
+                    {% if post.featured_image %}
+                    <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" style="width: 100%; height: 100%; object-fit: cover;">
+                    {% else %}
+                    <i class="fas fa-camera" style="font-size: 3rem; color: #fff;"></i>
+                    {% endif %}
+                </div>
+                <div style="padding: 1.5rem;">
+                    <small style="color: #ff6b35;">{{ post.created_at|date:"F j, Y" }}</small>
+                    <h3 style="margin: 0.5rem 0; font-size: 1.3rem;">{{ post.title }}</h3>
+                    <p style="opacity: 0.8; margin-bottom: 1rem;">{{ post.excerpt|truncatewords:20 }}</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+                        <a href="{% url 'blog_detail' post.slug %}" class="btn btn-outline" style="padding: 0.5rem 1rem;">Read More →</a>
+                        <small><i class="fas fa-eye"></i> {{ post.views }}</small>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p style="text-align: center; grid-column: 1/-1;">No blog posts yet. Check back soon!</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

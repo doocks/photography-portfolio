@@ -1,0 +1,70 @@
+{% extends 'gallery/base.html' %}
+
+{% block content %}
+<div style="min-height: 100vh; padding: 100px 2rem 60px;">
+    <div style="max-width: 1400px; margin: 0 auto;">
+        <h1 class="section-title" data-aos="fade-up">Our <span>Gallery</span></h1>
+        
+        <!-- Category Filter -->
+        <div class="filter-buttons" data-aos="fade-up" data-aos-delay="100">
+            <a href="{% url 'gallery' %}" class="btn {% if not current_category %}btn-primary{% else %}btn-outline{% endif %}">All</a>
+            {% for cat in categories %}
+            <a href="{% url 'gallery_category' cat.slug %}" class="btn {% if current_category and current_category.slug == cat.slug %}btn-primary{% else %}btn-outline{% endif %}">{{ cat.name }}</a>
+            {% endfor %}
+        </div>
+        
+        <!-- Gallery Grid -->
+        <div class="gallery-grid">
+            {% for photo in photos %}
+            <div class="gallery-item" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:50 }}">
+                <img src="{{ photo.image.url }}" alt="{{ photo.title }}" loading="lazy">
+                <div class="gallery-overlay" onclick="openLightbox('{{ photo.image.url }}', '{{ photo.title }}', '{{ photo.description }}')">
+                    <h3>{{ photo.title }}</h3>
+                    <p>{{ photo.category.name|default:"" }}</p>
+                </div>
+            </div>
+            {% empty %}
+            <p style="text-align: center; grid-column: 1/-1;">No photos found in this category.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Lightbox -->
+<div id="lightbox" class="lightbox" onclick="closeLightbox()">
+    <span class="close-lightbox" onclick="closeLightbox()">&times;</span>
+    <div class="lightbox-content">
+        <img id="lightbox-img" src="" alt="">
+    </div>
+    <div style="position: absolute; bottom: 30px; text-align: center; width: 100%; padding: 1rem;">
+        <h3 id="lightbox-title" style="color:#fff;"></h3>
+        <p id="lightbox-desc" style="color:#ccc;"></p>
+    </div>
+</div>
+
+<script>
+    function openLightbox(src, title, desc) {
+        document.getElementById('lightbox-img').src = src;
+        document.getElementById('lightbox-title').innerText = title;
+        document.getElementById('lightbox-desc').innerText = desc;
+        document.getElementById('lightbox').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    function closeLightbox() {
+        document.getElementById('lightbox').classList.remove('active');
+        document.body.style.overflow = '';
+    }
+    
+    document.querySelectorAll('.gallery-item').forEach(item => {
+        item.addEventListener('mouseenter', () => {
+            const overlay = item.querySelector('.gallery-overlay');
+            if (overlay) overlay.style.transform = 'translateY(0)';
+        });
+        item.addEventListener('mouseleave', () => {
+            const overlay = item.querySelector('.gallery-overlay');
+            if (overlay) overlay.style.transform = 'translateY(100%)';
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'gallery/base.html' %}
+
+{% block content %}
+<div style="min-height: 100vh; padding: 100px 2rem 60px;">
+    <div style="max-width: 1000px; margin: 0 auto;">
+        <h1 class="section-title" data-aos="fade-up">Contact <span>Us</span></h1>
+        
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert-success" data-aos="fade-up">
+                                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+        
+        <div class="two-column">
+            <!-- Contact Form -->
+            <div data-aos="fade-right">
+                <form method="post" style="background: rgba(255,255,255,0.05); padding: 2rem; border-radius: 20px;">
+                    {% csrf_token %}
+                    <div style="margin-bottom: 1rem;">
+                        <input type="text" name="name" class="form-control" placeholder="Your Name" required>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <input type="email" name="email" class="form-control" placeholder="Your Email" required>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <input type="text" name="subject" class="form-control" placeholder="Subject" required>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <textarea name="message" class="form-control" rows="5" placeholder="Your Message" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+                </form>
+            </div>
+            
+            <!-- Contact Info -->
+            <div data-aos="fade-left">
+                <div style="background: rgba(255,255,255,0.05); padding: 2rem; border-radius: 20px;">
+                    <h3 style="margin-bottom: 1rem;">Get in Touch</h3>
+                    <p style="margin-bottom: 1rem;"><i class="fas fa-phone" style="color: #ff6b35; width: 30px;"></i> {{ settings.phone|default:"+1 (555) 123-4567" }}</p>
+                    <p style="margin-bottom: 1rem;"><i class="fas fa-envelope" style="color: #ff6b35; width: 30px;"></i> {{ settings.email|default:"hello@example.com" }}</p>
+                    <p style="margin-bottom: 1rem;"><i class="fas fa-map-marker-alt" style="color: #ff6b35; width: 30px;"></i> {{ settings.address|default:"New York, NY" }}</p>
+                    
+                    <hr style="border-color: rgba(255,255,255,0.1); margin: 1.5rem 0;">
+                    
+                    <h4 style="margin-bottom: 1rem;">Follow Me</h4>
+                    <div style="display: flex; gap: 1rem;">
+                        {% if settings.instagram %}<a href="{{ settings.instagram }}" target="_blank" style="color: #fff; font-size: 1.5rem;"><i class="fab fa-instagram"></i></a>{% endif %}
+                        {% if settings.facebook %}<a href="{{ settings.facebook }}" target="_blank" style="color: #fff; font-size: 1.5rem;"><i class="fab fa-facebook"></i></a>{% endif %}
+                        {% if settings.twitter %}<a href="{{ settings.twitter }}" target="_blank" style="color: #fff; font-size: 1.5rem;"><i class="fab fa-twitter"></i></a>{% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

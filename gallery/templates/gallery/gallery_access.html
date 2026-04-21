@@ -1,0 +1,110 @@
+{% extends 'gallery/base.html' %}
+
+{% block content %}
+<div style="min-height: 100vh; padding: 100px 2rem 60px; display: flex; align-items: center; justify-content: center;">
+    <div style="max-width: 500px; width: 100%;">
+        
+        <!-- Secure Access Form -->
+        <div style="background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border-radius: 24px; padding: 2rem; border: 1px solid rgba(255,107,53,0.3);">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <i class="fas fa-lock" style="font-size: 3rem; color: #ff6b35; margin-bottom: 1rem; display: inline-block;"></i>
+                <h1 class="section-title" style="font-size: 1.8rem; margin-bottom: 0.5rem;">Client <span>Gallery</span></h1>
+                <p style="opacity: 0.8;">Enter your access code to view your private photo gallery.</p>
+            </div>
+            
+            {% if messages %}
+                {% for message in messages %}
+                <div class="{% if 'error' in message.tags or 'Invalid' in message.message or 'expired' in message.message %}alert-error{% else %}alert-success{% endif %}" style="padding: 1rem; border-radius: 10px; margin-bottom: 1.5rem; text-align: center;">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            {% endif %}
+            
+            <form method="post" action="{% url 'client_gallery_access' %}" id="accessForm" autocomplete="off">
+                {% csrf_token %}
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">
+                        <i class="fas fa-key" style="color: #ff6b35; margin-right: 0.5rem;"></i> Access Code
+                    </label>
+                    <input type="text" 
+                           name="access_code" 
+                           id="access_code" 
+                           class="form-control" 
+                           placeholder="Enter your access code" 
+                           required 
+                           autocomplete="off"
+                           style="text-align: center; font-size: 1.2rem; letter-spacing: 2px; text-transform: uppercase;">
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1rem; cursor: pointer;">
+                    <i class="fas fa-unlock-alt"></i> Access Gallery
+                </button>
+            </form>
+            
+            <!-- Clear Session Button -->
+            {% if request.session.gallery_access %}
+            <div style="margin-top: 1rem; text-align: center;">
+                <a href="{% url 'logout_gallery' %}" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+                    <i class="fas fa-sign-out-alt"></i> Clear Session & Start Over
+                </a>
+            </div>
+            {% endif %}
+            
+            <div style="text-align: center; margin-top: 1.5rem;">
+                <p style="font-size: 0.85rem; opacity: 0.7;">
+                    <i class="fas fa-question-circle"></i> Don't have an access code? 
+                    <a href="{% url 'contact' %}" style="color: #ff6b35; text-decoration: none;">Contact your photographer</a>
+                </p>
+            </div>
+        </div>
+        
+        <!-- Instructions -->
+        <div style="margin-top: 2rem; padding: 1.5rem; background: rgba(255,255,255,0.03); border-radius: 20px;">
+            <h4 style="margin-bottom: 1rem; font-size: 1rem;">
+                <i class="fas fa-shield-alt" style="color: #ff6b35; margin-right: 0.5rem;"></i>
+                Secure Access
+            </h4>
+            <ul style="list-style: none; padding-left: 0;">
+                <li style="margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.8rem;">
+                    <i class="fas fa-check-circle" style="color: #00ff00;"></i>
+                    <span>Access codes are private and unique to each client</span>
+                </li>
+                <li style="margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.8rem;">
+                    <i class="fas fa-check-circle" style="color: #00ff00;"></i>
+                    <span>Galleries expire after 6 months for security</span>
+                </li>
+                <li style="margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.8rem;">
+                    <i class="fas fa-check-circle" style="color: #00ff00;"></i>
+                    <span>Failed access attempts are logged and rate-limited</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+    const accessField = document.getElementById('access_code');
+    if (accessField) {
+        accessField.addEventListener('input', function(e) {
+            this.value = this.value.toUpperCase().trim();
+        });
+        accessField.focus();
+    }
+    
+    // Auto-hide messages after 5 seconds
+    setTimeout(function() {
+        const messages = document.querySelectorAll('.alert-success, .alert-error');
+        messages.forEach(function(msg) {
+            msg.style.transition = 'opacity 0.5s';
+            msg.style.opacity = '0';
+            setTimeout(function() {
+                if (msg.parentNode) msg.remove();
+            }, 500);
+        });
+    }, 5000);
+    
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
+</script>
+{% endblock %}

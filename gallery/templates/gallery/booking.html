@@ -1,0 +1,92 @@
+{% extends 'gallery/base.html' %}
+
+{% block content %}
+<div style="min-height: 100vh; padding: 100px 2rem 60px;">
+    <div style="max-width: 600px; margin: 0 auto;">
+        <h1 class="section-title" data-aos="fade-up">Book <span>Session</span></h1>
+        
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert-success" data-aos="fade-up">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+        
+        <form method="post" style="background: rgba(255,255,255,0.05); padding: 2rem; border-radius: 20px;" data-aos="fade-up" data-aos-delay="100">
+            {% csrf_token %}
+            
+            <div style="margin-bottom: 1rem;">
+                <label>Your Name *</label>
+                <input type="text" name="client_name" class="form-control" required placeholder="Full Name" value="{{ form.client_name.value|default:'' }}">
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <label>Email Address *</label>
+                <input type="email" name="client_email" class="form-control" required placeholder="your@email.com" value="{{ form.client_email.value|default:'' }}">
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <label>Phone Number *</label>
+                <input type="tel" name="client_phone" class="form-control" required placeholder="+1 234 567 8900" value="{{ form.client_phone.value|default:'' }}">
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <label>Event Date *</label>
+                <input type="date" name="event_date" class="form-control" required value="{{ form.event_date.value|default:'' }}">
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <label>Select Package</label>
+                <select name="package" class="form-control" id="packageSelect">
+                    <option value="">Select a package</option>
+                    {% for pkg in packages %}
+                    <option value="{{ pkg.id }}" {% if request.GET.package|stringformat:"s" == pkg.id|stringformat:"s" %}selected{% endif %}>
+                        {{ pkg.name }} - ${{ pkg.price }} ({{ pkg.hours }} hours, {{ pkg.edited_photos }} photos)
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <label>Additional Message</label>
+                <textarea name="message" class="form-control" placeholder="Tell me about your event...">{{ form.message.value|default:'' }}</textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                <i class="fas fa-calendar-check"></i> Submit Booking Request
+            </button>
+        </form>
+        
+        <!-- Package Quick Links -->
+        <div style="margin-top: 2rem; text-align: center;">
+            <p style="margin-bottom: 1rem; opacity: 0.7;">Not sure which package?</p>
+            <div style="display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;">
+                {% for pkg in packages %}
+                <a href="?package={{ pkg.id }}" class="btn btn-outline" style="padding: 0.4rem 1rem; font-size: 0.8rem;">
+                    {{ pkg.name }}
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 2rem;">
+            <p><i class="fas fa-phone"></i> Need help? Call: {{ settings.phone|default:"+1 (555) 123-4567" }}</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Highlight selected package in dropdown
+    document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const packageId = urlParams.get('package');
+        if (packageId) {
+            const select = document.getElementById('packageSelect');
+            if (select) {
+                select.value = packageId;
+            }
+        }
+    });
+</script>
+{% endblock %}
