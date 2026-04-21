@@ -76,18 +76,12 @@ TEMPLATES = [
 WSGI_APPLICATION = 'photography.wsgi.application'
 
 # ============================================================
-# DATABASE - SWITCH TO PostgreSQL for production
+# DATABASE - SQLite (for development on Windows)
 # ============================================================
-# Use environment variable for database URL
-# Example: DATABASE_URL=postgresql://user:password@localhost:5432/dbname
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DB_NAME', 'photography_db'),
-        'USER': os.environ.get('DB_USER', 'photography_user'),
-        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
-        'HOST': os.environ.get('DB_HOST', 'localhost'),
-        'PORT': os.environ.get('DB_PORT', '5432'),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -142,10 +136,10 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
 EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 587))
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.environ.get('EMAIL_USER', '')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD', '')
-DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'noreply@yourdomain.com')
-ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL', 'admin@yourdomain.com')
+EMAIL_HOST_USER = os.environ.get('sunhappy461@gmail.com', '')
+EMAIL_HOST_PASSWORD = os.environ.get('ijcu lbkj zngc aivb', '')
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'sunhappy461@gmail.com')
+ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL', 'sunhappy461@gmail.com')
 
 # ============================================================
 # HTTPS / SSL SECURITY - CRITICAL for production

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>{% block title %}{{ settings.site_title|default:"Lens & Light Photography" }}{% endblock %}</title>
+    <title>{% block title %}{{ settings.site_title|default:"Dinesh Photography" }}{% endblock %}</title>
     {% load static %}
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -526,7 +526,7 @@
     <canvas id="bg-canvas"></canvas>
 
     <nav class="navbar">
-        <div class="logo" onclick="location.href='/'">{{ settings.site_title|default:"LENS & LIGHT" }}</div>
+        <div class="logo" onclick="location.href='/'">{{ settings.site_title|default:"Dinesh Photography" }}</div>
         <button class="menu-toggle" onclick="toggleMenu()">
             <i class="fas fa-bars"></i>
         </button>
@@ -547,7 +547,7 @@
     {% block content %}{% endblock %}
 
     <footer class="footer">
-        <p>&copy; 2026 {{ settings.photographer_name|default:"Lens & Light" }}. All rights reserved.</p>
+        <p>&copy; 2026 {{ settings.photographer_name|default:"Dinesh Photography" }}. All rights reserved.</p>
         <div style="margin-top: 1rem;">
             {% if settings.instagram %}<a href="{{ settings.instagram }}" target="_blank" style="color:#fff; margin:0 10px; display: inline-block;"><i class="fab fa-instagram fa-lg"></i></a>{% endif %}
             {% if settings.facebook %}<a href="{{ settings.facebook }}" target="_blank" style="color:#fff; margin:0 10px; display: inline-block;"><i class="fab fa-facebook fa-lg"></i></a>{% endif %}
