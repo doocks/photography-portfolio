@@ -192,3 +192,23 @@ LOGGING = {
         },
     },
 }
+
+# ============================================================
+# SECURE AUTO-CREATE ADMIN (ONLY ON RENDER)
+# ============================================================
+
+if os.environ.get('ADMIN_USERNAME') and os.environ.get('ADMIN_PASSWORD'):
+    try:
+        from django.contrib.auth import get_user_model
+        User = get_user_model()
+        username = os.environ.get('ADMIN_USERNAME')
+        email = os.environ.get('ADMIN_EMAIL', 'admin@example.com')
+        password = os.environ.get('ADMIN_PASSWORD')
+        
+        if not User.objects.filter(username=username).exists():
+            User.objects.create_superuser(username, email, password)
+            print(f"✅ Admin user '{username}' created successfully")
+        else:
+            print(f"ℹ️ Admin user '{username}' already exists")
+    except Exception as e:
+        print(f"Admin creation skipped: {e}")
