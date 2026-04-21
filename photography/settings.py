@@ -13,12 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 DEBUG = False  # ← MUST BE FALSE!
 
 # ❌ CHANGE THIS - Use your actual domain
-ALLOWED_HOSTS = [
-    'yourdomain.com',
-    'www.yourdomain.com',
-    'localhost',  # For testing only
-    '127.0.0.1',
-]
+ALLOWED_HOSTS = ['.onrender.com', '127.0.0.1', 'localhost']
 
 # ❌ CHANGE THIS - Use environment variable for SECRET_KEY
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
@@ -145,7 +140,7 @@ ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL', 'sunhappy461@gmail.com')
 # HTTPS / SSL SECURITY - CRITICAL for production
 # ============================================================
 # Enable these when you have SSL certificate installed
-SECURE_SSL_REDIRECT = True
+SECURE_SSL_REDIRECT = False
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 SECURE_BROWSER_XSS_FILTER = True

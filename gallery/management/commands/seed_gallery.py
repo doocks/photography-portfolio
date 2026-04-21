@@ -127,7 +127,7 @@ class Command(BaseCommand):
             site_title="Lens & Light Photography",
             hero_title="Capturing Your Beautiful Moments",
             hero_subtitle="Professional Photography Services for Weddings, Portraits & Events",
-            photographer_name="Jane Mitchell",
+            photographer_name="Dinesh Shrestha",
             photographer_bio="I'm an award-winning photographer with over 8 years of experience. My passion is capturing authentic emotions and creating timeless memories that you'll cherish forever. Based in New York, I travel worldwide for assignments.",
             photographer_experience=8,
             email="hello@lensandlight.com",
