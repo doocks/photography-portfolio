@@ -16,5 +16,7 @@ urlpatterns = [
     path('client/gallery/logout/', views.logout_gallery, name='logout_gallery'),
     path('my/galleries/', views.my_galleries, name='my_galleries'),
     path('review/', views.submit_review, name='submit_review'),  # ← ADD THIS
-    path('api/reviews/', views.get_reviews_api, name='get_reviews_api'),  # ← ADD THIS
+    path('api/reviews/', views.get_reviews_api, name='get_reviews_api'), 
+    path('check-admin/', views.check_admin, name='check_admin'), 
+      # ← ADD THIS
 ]

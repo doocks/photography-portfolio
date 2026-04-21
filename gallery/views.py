@@ -313,3 +313,20 @@ def get_reviews_api(request):
         'client_name', 'rating', 'review_text', 'event_type', 'created_at'
     )
     return JsonResponse(list(reviews), safe=False)
+
+# Add at the top with other imports
+from django.contrib.auth import get_user_model
+from django.http import HttpResponse
+
+User = get_user_model()
+
+def check_admin(request):
+    users = User.objects.filter(is_superuser=True)
+    if users.exists():
+        msg = "<h3>Existing Admin Users:</h3><ul>"
+        for u in users:
+            msg += f"<li>Username: {u.username} | Email: {u.email}</li>"
+        msg += "</ul>"
+        return HttpResponse(msg)
+    else:
+        return HttpResponse("<h3>No admin users found!</h3>")
